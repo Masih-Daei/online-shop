@@ -1,0 +1,61 @@
+{% extends 'base/base.html' %}
+{% load render_partial %}
+
+{% block content %}
+<div class="container">
+  <div class="row">
+    <!--Right Part Start -->
+    <aside id="column-right" class="col-sm-3 hidden-xs">
+      {% render_partial 'Profile.views.profile_sidebar' %}
+    </aside>
+    <!--Right Part End -->
+    <!--Middle Part Start-->
+    <div id="content" class="col-sm-9">
+      <h1 class="title">سفارش های من</h1>
+      <ul class="">
+        <li>
+          <table class="table">
+            <tbody>
+              {% for orders in order %}
+              <tr>
+                <td class="text-center"><a href="{% url 'order:cart' %}"><img class="img-thumbnail"
+                      title="{{orders.title}}" alt="{{orders.title}}" src="{{orders.product.image.url}}"></a></td>
+                <td class="text-left"><a href="{{orders.product.get_product_detail_url}}">{{orders.product.title}}</a>
+                </td>
+                <td class="text-right">{{orders.count}}</td>
+                <td class="text-right">{{orders.price}} تومان</td>
+                <td class="text-center"><a href="/remove_cart/{{orders.id}}"><button
+                      class="btn btn-danger btn-xs remove" title="حذف" type="button"><i
+                        class="fa fa-times"></i></button></a></td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </li>
+        <li>
+          <div>
+            <table class="table table-bordered">
+              <tbody>
+                <tr>
+                  <td class="text-right"><strong>جمع کل</strong></td>
+                  <td class="text-right">{{total_price}} تومان</td>
+                </tr>
+                <tr>
+                  <td class="text-right"><strong>قابل پرداخت</strong></td>
+                  <td class="text-right">{{total_price}} تومان</td>
+                </tr>
+              </tbody>
+            </table>
+            <p class="checkout"><a href="/cart" class="btn btn-primary"><i class="fa fa-shopping-cart"></i> مشاهده
+                سبد</a>&nbsp;&nbsp;&nbsp;<a href="checkout.html" class="btn btn-primary"><i class="fa fa-share"></i>
+                تسویه
+                حساب</a>
+            </p>
+          </div>
+        </li>
+      </ul>
+    </div>
+    <!--Middle Part End -->
+  </div>
+</div>
+{% endblock %}

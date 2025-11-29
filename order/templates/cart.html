@@ -1,0 +1,75 @@
+{% extends "base/base.html" %}
+{% block content %}
+<div id="content" class="col-sm-12">
+          <h1 class="title">سبد خرید</h1>
+            <div class="table-responsive">
+              {% if order != None and details|length > 0 %}
+              <table class="table table-bordered">
+                <thead>
+                  <tr>
+                    <td class="text-center">تصویر</td>
+                    <td class="text-left">نام محصول</td>
+                    <td class="text-left">کد محصول</td>
+                    <td class="text-left">تعداد</td>
+                    <td class="text-right">قیمت واحد</td>
+                    <td class="text-right">کل</td>
+                    <td class="text-right">عملیات</td>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for detail in details %}
+                  <tr>
+                    <td class="text-center"><a href="{{detail.product.get_product_detail_url}}"><img src="{{detail.product.image.url}}" alt="{{detail.product.title}}" title="{{detail.product.title}}" class="img-thumbnail"></a></td>
+                    <td class="text-left"><a href="{{detail.product.get_product_detail_url}}">{{detail.product.title}}</a><br></td>
+                    <td class="text-left">{{detail.product.id}}</td>
+                    <td class="text-left"><div class="input-group btn-block quantity">
+                        <span>{{detail.count}}</span>
+                        <span class="input-group-btn">
+                        </span></div></td>
+                    <td class="text-right">{{detail.product.price}} تومان</td>
+                    <td class="text-right">{{detail.product_sum_in_cart}} تومان<</td>
+                    <td class="text-right">
+                        <!-- حذف یک عدد -->
+                        <a href="{% url 'order:remove_cart' detail.id %}?action=remove_one" 
+                           class="btn btn-warning btn-sm" title="حذف یک عدد">
+                            ➖ یک عدد
+                        </a>
+                        <!-- حذف کامل -->
+                        <a href="{% url 'order:remove_cart' detail.id %}?action=remove_all" 
+                           class="btn btn-danger btn-sm" title="حذف همه">
+                            ❌ همه
+                        </a>
+                    </td>
+                  </tr>
+                  {% endfor %}
+
+                </tbody>
+              </table>
+              {% else %}
+              <p>هیچ محصول مورد نطری یافت نشد</p>
+              {% endif %}
+            </div>
+          <div class="row">
+            <div class="col-sm-4 col-sm-offset-8">
+              <table class="table table-bordered">
+                <tbody><tr>
+                  <td class="text-right"><strong>جمع کل:</strong></td>
+                  <td class="text-right">{{total_price}} تومان</td>
+                </tr>
+                <tr>
+                  <td class="text-right"><strong>مالیات:</strong></td>
+                  <td class="text-right">0 تومان</td>
+                </tr>
+                <tr>
+                  <td class="text-right"><strong>قابل پرداخت :</strong></td>
+                  <td class="text-right">{{total_price}} تومان</td>
+                </tr>
+              </tbody></table>
+            </div>
+          </div>
+          <div class="buttons">
+            <div class="pull-left"><a href="{% url 'home' %}" class="btn btn-default">ادامه خرید</a></div>
+            <div class="pull-right"><a href="checkout.html" class="btn btn-primary">تسویه حساب</a></div>
+          </div>
+        </div>
+{% endblock content %}
