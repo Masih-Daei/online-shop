@@ -1,1 +1,1 @@
-mini online-shop with django and pyhton 
+mini online-shop with django and python
